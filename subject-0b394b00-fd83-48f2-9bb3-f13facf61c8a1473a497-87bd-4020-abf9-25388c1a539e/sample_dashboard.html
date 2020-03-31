@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="css/c3.css"></link> 
-<link rel="stylesheet" type="text/css" href="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/classic.css"></link> 
+<link rel="stylesheet" type="text/css" href="css/c3.css"></link>
+<link rel="stylesheet" type="text/css" href="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/classic.css"></link>
 
 <script src="js/vendors/c3.js"></script>
 <script src="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/jQDateRangeSlider-withRuler-min.js"></script>
@@ -10,12 +10,12 @@
 	#runButton{
 		display: none;
 	}
-	
+
 	.ui-ruler-tick-label{
 		font-size: 10px;
 	}
 
-	
+
 	.ui-ruler-tick-inner{
 		padding-top: 2px;
 	}
@@ -23,7 +23,7 @@
 
 
 .heading{
-	
+
 }
 
 .gaugeTitle{
@@ -73,7 +73,7 @@
 	<div class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-12">
-				<h1 style="text-align: center;" id="heading" class="heading">Travel Expense Dashboard</h1>
+				<h1 style="text-align: center;" id="heading" class="heading">Travel Expense Dashboard 6</h1>
 			</div>
 		</div>
 
@@ -82,9 +82,9 @@
 			<div class="col-sm-9" id="monthSelector"></div>
 			<div class="col-sm-1" id="runButton"></div>
 		</div>
-		
+
 		<br>
-		
+
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="row" id="pie">
@@ -136,7 +136,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<br>
 		<br>
 		<div class="row" id="footer">
@@ -146,10 +146,10 @@
 				<label class="col-xs-1" id="runDate"></label>
 			</div>
 		</div>
-		
-		<div id="dummy"></div> 
+
+		<div id="dummy"></div>
 	</div>
-	
+
 <script>
 
 var dashboard = Dashboard;
@@ -178,7 +178,7 @@ var runButton = {
 			display: "Generate Chart"
 		},
     htmlElementId : "#runButton",
-    executeAtStart: false    
+    executeAtStart: false
 };
 
 var dummy = {
@@ -287,7 +287,7 @@ var fifthGauge = {
 };
 
 var getResource = "url('"+window.DashboardGlobals.baseUrl+"getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/travel_expense.jpg'"+")";
-					
+
 $("#pieChart").css('background-image',getResource);
 
 $('#runDate').text(moment().format("MM-DD-YYYY"));
@@ -344,7 +344,7 @@ $('#monthSelector').dateRangeSlider({
         return map[month];
       }
   });
-  
+
  $('#monthSelector').bind("valuesChanged", function(e, data){
 	dashboard.setVariable('start_date', moment(data.values.min).format("YYYY-MM-DD hh:mm:ss"));
 	dashboard.setVariable('end_date', moment(data.values.max).format("YYYY-MM-DD hh:mm:ss"));

@@ -3,11 +3,13 @@
 
 <script src="js/vendors/c3.js"></script>
 <script src="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/jQDateRangeSlider-withRuler-min.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.js"></script>
+
+<button id="btn"> 添加图表 </button>
+<button id="btn2">删除图表 </button>
 
 
-<style type="text/css">
 
-</style>
 	<div class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-12">
@@ -17,16 +19,51 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="row" id="pie">
-					<div class="col-sm-12" id="pieHeading"><h3>图表标题</h3></div>
+					<div class="col-sm-12" id="pieHeading"><h3>图表标题1</h3></div>
 					<div class="col-sm-12" id="pieChart"></div>
 				</div>
 			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row" id="pie2">
+					<div class="col-sm-12" id="pieHeading2"><h3>图表标题2</h3></div>
+					<div class="col-sm-12" id="pieChart2"></div>
+				</div>
+			</div>
+		</div>
 	</div>
+
+	<div class="row reportsDiv">
+		<div class="col-sm-6" id="tableChart">tableChart</div>
+		<div class="col-sm-6" id="barChart">barChart</div>
+	</div>
+
+
+<div>
+
+
+	<button id="btn4"> 创建Echarts图表 </button>
+
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+	<p>
+		[<span id="xAxisTag"></span>],[<span id="barValue"></span>]
+	</p>
+
+	<div id="echart" style="width: 600px;height:400px;"></div>
+	<div id="echart2" style="width: 600px;height:400px;"></div>
+</div>
+
+
+
+
 <script>
 
 let dashboard = Dashboard;
-dashboard.resetAll();
+// dashboard.resetAll();
+
+
 let pieChart = {
     name: "pieChart",
 	type:  "chart",
@@ -41,6 +78,213 @@ let pieChart = {
     htmlElementId : "#pieChart",
     executeAtStart: true
 };
-let components = [pieChart];
+let pieChart2 = {
+	name: "pieChart2",
+	type:  "chart",
+	vf : {
+		id : 2,
+		file : "sample_dashboard2.efwvf"
+	},
+	requestParameters : {
+		start_date: "start_date",
+		end_date: "end_date"
+	},
+	htmlElementId : "#pieChart2",
+	executeAtStart: true
+};
+
+let chart = {
+	name: "chart",
+	type:  "chart",
+	vf : {
+		id : 1,
+		file : "Table.efwvf"
+	},
+	requestParameters : {
+		start_date: "s_date",
+		end_date: "e_date"
+	},
+	htmlElementId : "#tableChart",
+	executeAtStart: true
+};
+
+let  barChart = {
+	name: "chart",
+	type:  "chart",
+	vf : {
+		id : 1,
+		file : "BarChart.efwvf"
+	},
+	requestParameters : {
+		start_date: "s_date",
+		end_date: "e_date"
+	},
+	htmlElementId : "#barChart",
+	executeAtStart: true
+};
+
+// let components = [pieChart, pieChart2];
+let components = [pieChart2];
 dashboard.init(components);
+
+$(function() {
+	console.log('ready.....');
+	$('#btn').click(function () {
+		let components = [pieChart];
+		dashboard.init(components);
+	});
+
+	$('#btn2').click(function () {
+		let components = [pieChart2];
+		dashboard.init(components);
+	});
+
+	$('#btn3').click(function () {
+		dashboard.resetAll();
+	});
+
+	$('#btn4').click(function () {
+		option.xAxis.data = chart2_data.map(item=>item.client);
+		option.series[0].data = chart2_data.map(item=>item.cost)
+		myChart.setOption(option);
+
+		myChart.on('click', function (params) {
+			// 当componentType == "xAxis"或者 ==“yAxisx”时，取被点击时坐标轴的值params.value
+			// alert("单击了"+params.componentType+"x轴标签"+params.value);
+			// if(params.componentType == "xAxis"){
+			//     alert("单击了"+params.value+"x轴标签");
+			// }else if (params.componentType == "yAxis") {
+			//     alert("单击了"+params.value+"y轴标签");
+			// }
+			// else{
+			//     alert("单击了"+params.name+"柱状图"+params.value);
+			// }
+
+			// invalid start
+			//     获取data长度
+			// 　　alert(option.series[0].data.length);
+			//      获取地N个data的值
+			// 　　alert(option.series[0].data[3]);
+			//     获取series中param.dataIndex事件对应的值
+			// alert(params.dataIndex);
+			// 　　alert(option.series[params.seriesIndex].data[params.dataIndex]);
+			//invalid end
+
+			// alert(param.value);
+			//    获取xAxis当前点击事件索引对应的值，可以用作传参
+			// alert("test "+option.xAxis.data[params.dataIndex]);
+			//param.dataIndex 获取当前点击索引，
+			// 　　alert(param.dataIndex);
+			//  当前点击事件位于series中的索引
+			//   alert(param.seriesIndex);
+			//param具体包含的参数见 https://blog.csdn.net/allenjay11/article/details/76033232
+			updatePage(option.xAxis.data[params.dataIndex],params.value);
+
+			refresh();
+		});
+
+
+
+		option2.series[0].data = chart2_data.map(item=>{
+			return {
+				value:item.cost,
+				name:item.client,
+			}
+		});
+
+		console.log(option2.series[0].data)
+		myChart2.setOption(option2);
+
+
+
+
+	})
+});
+
+function updatePage(tag, value){
+	var xAxisTag = $("#xAxisTag");
+	xAxisTag.html(tag);
+	var barValue = $("#barValue");
+	barValue.html(value);
+};
+
+
+var myChart = echarts.init(document.getElementById('echart'));
+var option = {
+	toolbox: {
+		show: true,
+		feature: {
+			dataZoom: {
+				yAxisIndex: 'none'
+			},
+			dataView: {readOnly: false},
+			magicType: {type: ['line', 'bar']},
+			restore: {},
+			saveAsImage: {}
+		}
+	},
+	title: {
+		// text: 'ECharts 入门示例'
+	},
+	tooltip: {},
+	legend: {
+		// data:['销量']
+	},
+	xAxis: {
+		data: [],
+		triggerEvent:true,
+		axisTick: {
+			alignWithLabel: true //坐标值是否在刻度中间
+		}
+	},
+	yAxis: {triggerEvent:true},
+	series: [{
+		// name: '销量',
+		type: 'bar',
+		data: [5, 20, 36, 10, 10, 20]
+	}]
+};
+
+
+
+
+var myChart2 = echarts.init(document.getElementById('echart2'));
+var option2 = {
+	backgroundColor: '#2c343c',
+
+	series : [
+		{
+			name: '访问来源',
+			type: 'pie',
+			radius: '55%',
+			roseType: 'angle',
+			itemStyle: {
+				// 阴影的大小
+				shadowBlur: 10,
+				// 阴影水平方向上的偏移
+				shadowOffsetX: 5,
+				// 阴影垂直方向上的偏移
+				shadowOffsetY: 0,
+				// 阴影颜色
+				shadowColor: 'rgba(0, 0, 0, 0.5)',
+				emphasis: {
+					shadowBlur: 20,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				}
+			},
+			lineStyle: {
+				color: 'rgba(255, 255, 255, 0.3)'
+			},
+			textStyle: {
+				color: 'rgba(255, 255, 255, 0.3)'
+			},
+			data:[]
+		}
+	]
+};
+
+
+
+
+
 </script>

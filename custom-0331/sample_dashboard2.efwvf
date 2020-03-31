@@ -1,0 +1,46 @@
+<Charts>
+
+	<Chart id="2">
+        <prop>
+            <name>dummy</name>
+            <type>Custom</type>
+            <DataSource>1</DataSource>
+            <script>
+                <![CDATA[
+
+                chart2_data = data
+                console.log($('#chart_2'))
+
+					 if (data.length == 0) {
+                        $('#chart_2').html("<div><h2 style='text-align:CENTER;color:#927333;'>No Data To Display</h2></div>");
+                    } else {
+						var array1=[];
+						for (var i = 0; i < data.length; i++) {
+							var array2=[];
+							for (var prop in data[i]) {
+									array2.push(data[i][prop]);
+								}
+							array1[i] = array2;
+						}
+
+							var chart2 = c3.generate({
+								bindto: '#chart_2',
+								data: {
+									columns: array1,
+									type: 'bar'
+								},
+								legend: {
+									show: true
+								},
+								tooltip: {
+								  show: true
+								}
+							});
+					}
+				]]>
+            </script>
+        </prop>
+    </Chart>
+
+
+</Charts>
