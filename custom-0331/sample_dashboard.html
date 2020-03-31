@@ -1,0 +1,46 @@
+<link rel="stylesheet" type="text/css" href="css/c3.css"></link>
+<link rel="stylesheet" type="text/css" href="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/classic.css"></link>
+
+<script src="js/vendors/c3.js"></script>
+<script src="getExternalResource.html?path=Sample Reports/Sample EFW Dashboard/jQDateRangeSlider-withRuler-min.js"></script>
+
+
+<style type="text/css">
+
+</style>
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-sm-12">
+				<h1 style="text-align: center;" id="heading" class="heading">自定义视图</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row" id="pie">
+					<div class="col-sm-12" id="pieHeading"><h3>图表标题</h3></div>
+					<div class="col-sm-12" id="pieChart"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>
+
+let dashboard = Dashboard;
+dashboard.resetAll();
+let pieChart = {
+    name: "pieChart",
+	type:  "chart",
+	vf : {
+		id : 2,
+		file : "sample_dashboard.efwvf"
+	},
+	requestParameters : {
+		start_date: "start_date",
+		end_date: "end_date"
+	},
+    htmlElementId : "#pieChart",
+    executeAtStart: true
+};
+let components = [pieChart];
+dashboard.init(components);
+</script>
