@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a1efb04c-1b20-490b-9862-c60ed37b5926" name="172.20.95.130" url="http://172.20.95.130:8086/">
+        <fileTransfer host="172.20.95.130" port="22" rootFolder="/report/hi-repository/Sample Reports" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
